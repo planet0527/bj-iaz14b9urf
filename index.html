@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>出張バンド塾</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 暗転したステージに赤いスポットが落ちる全面ヒーロー → 流れるティッカー → ツアー日程リスト → 赤い取り置き帯 → バイオ → 過去公演 → 巨大ロゴのフッター。黒地一枚絵で統一 */
+:root{
+  --black:#0D0909; --black-2:#171011; --black-3:#221718;
+  --red:#E1141D; --red-deep:#9E0C12;
+  --white:#F5F0ED; --gray:#A99B98; --line:#33242550;
+  --en:"Anton","Dela Gothic One",Impact,sans-serif;
+  --jp:"Dela Gothic One","Hiragino Sans","Yu Gothic",sans-serif;
+  --body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  --mono:"DM Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--black);color:var(--white);font-family:var(--body);font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--black)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:40;opacity:.07;mix-blend-mode:screen;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.en{font-family:var(--en);font-weight:400;letter-spacing:.02em;text-transform:uppercase}
+.mono{font-family:var(--mono)}
+
+/* ---------- NAV ---------- */
+.nav{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:20;transition:background .25s}
+.nav.solid{background:rgba(13,9,9,.92);backdrop-filter:blur(6px)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:16px}
+.logo{font-family:var(--jp);font-size:17px;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo i{width:12px;height:12px;background:var(--red);display:inline-block;transform:rotate(45deg)}
+.nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0}
+.nav ul a{font-family:var(--en);font-size:17px;letter-spacing:.08em;text-decoration:none;position:relative}
+.nav ul a::after{content:"";position:absolute;left:0;right:100%;bottom:-2px;height:2px;background:var(--red);transition:right .2s}
+.nav ul a:hover::after{right:0}
+.nav .tix{background:var(--red);padding:6px 14px;font-family:var(--en);font-size:16px;letter-spacing:.08em;text-decoration:none}
+@media (max-width:760px){.nav ul{display:none}}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;min-height:min(92svh,860px);display:flex;align-items:flex-end;overflow:hidden;background:var(--black)}
+#stage{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero::after{content:"";position:absolute;inset:auto 0 0;height:40%;background:linear-gradient(transparent,var(--black));pointer-events:none}
+.hero .wrap{position:relative;z-index:2;width:100%;padding-block:140px 56px}
+.hero .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.3em;color:var(--gray);margin:0 0 18px;display:flex;align-items:center;gap:12px}
+.hero .kicker::before{content:"";width:36px;height:2px;background:var(--red)}
+.hero h1{margin:0;font-family:var(--jp);font-weight:400;font-size:clamp(56px,13.5vw,188px);line-height:.92;letter-spacing:-.02em}
+.hero h1 .r{color:var(--red)}
+.hero .sub{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:28px;border-top:1px solid #ffffff2a;padding-top:20px}
+.hero .sub p{margin:0;max-width:28em;font-size:17px}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--red);color:var(--white);font-family:var(--en);font-size:19px;letter-spacing:.06em;padding:12px 22px;text-decoration:none;border:2px solid var(--red);cursor:pointer;line-height:1.1}
+.btn:hover{background:var(--white);color:var(--black);border-color:var(--white)}
+.btn.ghost{background:transparent;border-color:var(--white)}
+.btn.ghost:hover{background:var(--white);color:var(--black)}
+
+/* ---------- TICKER ---------- */
+.ticker{background:var(--red);overflow:hidden;border-block:2px solid var(--black)}
+.ticker .row{display:flex;width:max-content;animation:tick 28s linear infinite}
+.ticker span{font-family:var(--en);font-size:clamp(22px,3.2vw,34px);letter-spacing:.04em;padding:10px 0;white-space:nowrap}
+.ticker span b{font-weight:400;color:var(--black);margin:0 .8em}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* ---------- SECTIONS ---------- */
+.sec{padding-block:100px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:44px}
+.head h2{margin:0;font-family:var(--en);font-weight:400;font-size:clamp(64px,11vw,150px);line-height:.85;letter-spacing:.01em}
+.head .jp{font-family:var(--jp);font-size:16px;color:var(--red);display:block;margin-bottom:10px;letter-spacing:.1em}
+.head p{margin:0;color:var(--gray);max-width:24em;font-size:15px}
+
+/* ---------- LIVE LIST ---------- */
+.shows{border-top:2px solid var(--white)}
+.show{display:grid;grid-template-columns:150px 1fr auto;gap:28px;align-items:center;padding:28px 0;border-bottom:1px solid #ffffff22}
+.show .d{font-family:var(--en);line-height:.9}
+.show .d .md{font-size:64px;display:block}
+.show .d .wy{font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--gray)}
+.show h3{margin:0;font-family:var(--en);font-weight:400;font-size:clamp(30px,4vw,44px);line-height:1}
+.show .meta{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:10px;font-family:var(--mono);font-size:14px;color:var(--gray);font-variant-numeric:tabular-nums}
+.show .meta b{color:var(--white);font-weight:500}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.16em;padding:3px 8px;border:1px solid currentColor;margin-left:12px;vertical-align:middle;color:var(--red)}
+.show.past{opacity:.55}
+.show.past:hover{opacity:1}
+@media (max-width:760px){.show{grid-template-columns:1fr;gap:12px}.show .d .md{font-size:48px}}
+.tt{margin-top:0;display:grid;grid-template-columns:1fr 1fr;gap:56px;padding:36px 0 8px}
+@media (max-width:860px){.tt{grid-template-columns:1fr;gap:36px}}
+.tt h4{font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:.24em;color:var(--gray);margin:0 0 12px}
+.tt ol{list-style:none;margin:0;padding:0}
+.tt li{display:grid;grid-template-columns:7.2em 1fr;gap:14px;padding:11px 0;border-bottom:1px dashed #ffffff26;align-items:baseline}
+.tt .tm{font-family:var(--mono);font-size:14px;color:var(--gray);font-variant-numeric:tabular-nums}
+.tt .nm{font-weight:700;font-size:17px}
+.tt li.us{background:var(--red);padding-inline:12px;margin-inline:-12px;border-bottom-color:transparent}
+.tt li.us .tm{color:var(--white)}
+.tt li.us .nm{font-family:var(--jp);font-weight:400;font-size:20px}
+.price{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--white)}
+.price div{padding:20px}
+.price div+div{border-left:2px solid var(--white)}
+.price .k{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--gray)}
+.price .v{font-family:var(--en);font-size:52px;line-height:1;display:block;margin-top:6px;font-variant-numeric:tabular-nums}
+.price .v small{font-family:var(--body);font-size:14px;margin-left:4px}
+.price .full{grid-column:1/-1;border-left:0!important;border-top:2px solid var(--white);font-size:14px;color:var(--gray);padding-block:12px}
+.small{font-size:14px;color:var(--gray)}
+
+/* ---------- TICKET BAND ---------- */
+.band{background:var(--red);color:var(--white);position:relative;overflow:hidden}
+.band::before{content:"TICKET TICKET TICKET TICKET";position:absolute;font-family:var(--en);font-size:220px;line-height:1;color:var(--red-deep);top:-30px;left:-20px;white-space:nowrap;opacity:.55;pointer-events:none}
+.band .wrap{position:relative;padding-block:90px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+@media (max-width:860px){.band .wrap{grid-template-columns:1fr;gap:32px;padding-block:70px}}
+.band h2{font-family:var(--en);font-weight:400;font-size:clamp(56px,8vw,104px);line-height:.9;margin:0 0 20px}
+.band h2 span{display:block;font-family:var(--jp);font-size:22px;margin-top:12px;letter-spacing:.06em}
+.band p{margin:0 0 12px;max-width:30em}
+.steps{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:10px;counter-reset:s}
+.steps li{display:flex;gap:14px;align-items:baseline;counter-increment:s;font-weight:500}
+.steps li::before{content:counter(s);font-family:var(--en);font-size:28px;line-height:1;color:var(--black);min-width:1em}
+form{background:var(--black);padding:28px;display:grid;gap:16px;box-shadow:12px 12px 0 var(--red-deep)}
+label{display:grid;gap:6px;font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:var(--gray)}
+input,select,textarea{font:inherit;font-family:var(--body);font-size:16px;letter-spacing:0;color:var(--white);background:var(--black-2);border:0;border-bottom:2px solid var(--white);padding:10px 4px;border-radius:0;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-bottom-color:var(--red)}
+textarea{min-height:64px;resize:vertical}
+.out{background:var(--black-3);border-left:4px solid var(--red);padding:14px 16px;white-space:pre-wrap;font-size:15px;color:var(--white)}
+.copied{font-family:var(--mono);font-size:13px;color:var(--gray);margin-left:12px}
+
+/* ---------- BIO ---------- */
+.bio{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
+@media (max-width:860px){.bio{grid-template-columns:1fr;gap:40px}}
+.bio blockquote{margin:0;font-family:var(--jp);font-size:clamp(30px,4.6vw,56px);line-height:1.25;text-wrap:balance}
+.bio blockquote em{font-style:normal;color:var(--red)}
+.pillars{display:grid;gap:0;border-top:2px solid var(--white)}
+.pillars div{display:grid;grid-template-columns:110px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid #ffffff22}
+.pillars .en{font-size:30px;line-height:1;color:var(--red)}
+.pillars h3{margin:0 0 4px;font-family:var(--jp);font-weight:400;font-size:19px}
+.pillars p{margin:0;font-size:15px;color:#d9cfcc}
+
+/* ---------- PAST EVENT ---------- */
+.event{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--white)}
+@media (max-width:860px){.event{grid-template-columns:1fr}}
+.event .art{position:relative;background:var(--red);padding:40px 32px;min-height:420px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.event .art::after{content:"";position:absolute;width:520px;height:520px;border-radius:50%;border:70px solid var(--red-deep);right:-220px;bottom:-240px;opacity:.7}
+.event .art > *{position:relative;z-index:1}
+.event .art .y{font-family:var(--mono);letter-spacing:.3em;font-size:13px}
+.event .art h3{font-family:var(--jp);font-weight:400;font-size:clamp(56px,8vw,96px);line-height:1;margin:16px 0 0}
+.event .art .ff{font-family:var(--en);font-size:clamp(34px,4vw,48px);line-height:1;color:var(--black)}
+.event .txt{padding:40px 32px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.event .txt .copy{font-family:var(--jp);font-size:22px;line-height:1.5;margin:0}
+.event .txt p{margin:0;color:#d9cfcc}
+.chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0}
+.chips li{border:1px solid #ffffff55;padding:4px 14px;font-size:14px}
+.links{display:flex;flex-wrap:wrap;gap:12px;margin-top:auto}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:2px solid var(--white);overflow:hidden}
+footer .big{font-family:var(--jp);font-size:clamp(40px,12.4vw,168px);line-height:.95;margin:0;padding-block:48px 8px;letter-spacing:-.02em;white-space:nowrap}
+footer .big span{color:var(--red)}
+footer .bar{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-block:20px 40px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--gray)}
+
+@media (prefers-reduced-motion:reduce){.ticker .row{animation:none}}
+@media (prefers-reduced-motion:no-preference){.btn,.nav ul a::after{transition:all .18s}}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top"><i></i>出張バンド塾</a>
+    <nav aria-label="メニュー"><ul>
+      <li><a href="#live">Live</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#history">History</a></li>
+    </ul></nav>
+    <a class="tix" href="#ticket">Ticket</a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <canvas id="stage" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <p class="kicker">BAND JUKU ／ ON THE ROAD</p>
+    <h1>出張<br><span class="r">バンド塾</span></h1>
+    <div class="sub">
+      <p>楽器を持って、人のいる場所へ。音を合わせる楽しさを届けに、どこへでも出向くバンドです。</p>
+      <div class="cta">
+        <a class="btn" href="#ticket">チケット取り置き →</a>
+        <a class="btn ghost" href="#live">LIVE INFO</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-label="次のライブ 2026年11月8日 Koedo FUN Live">
+  <div class="row" aria-hidden="true">
+    <span>NEXT LIVE<b>✕</b>2026.11.08 SUN<b>✕</b>KOEDO FUN LIVE<b>✕</b>START 17:30<b>✕</b>出張バンド塾 20:50〜<b>✕</b></span>
+    <span>NEXT LIVE<b>✕</b>2026.11.08 SUN<b>✕</b>KOEDO FUN LIVE<b>✕</b>START 17:30<b>✕</b>出張バンド塾 20:50〜<b>✕</b></span>
+  </div>
+</div>
+
+<section class="sec" id="live">
+  <div class="wrap">
+    <div class="head">
+      <h2><span class="jp">ライブ情報</span>Live</h2>
+      <p id="countline">次のステージまで、あと13日。</p>
+    </div>
+
+    <div class="shows">
+      <article class="show">
+        <div class="d"><span class="md">11.08</span><span class="wy">2026 / SUN</span></div>
+        <div>
+          <h3>Koedo FUN Live<span class="tag">BOOKING</span></h3>
+          <div class="meta"><span>OPEN <b>17:00</b></span><span>START <b>17:30</b></span><span>出番 <b>20:50–21:20</b></span></div>
+        </div>
+        <a class="btn" href="#ticket">TICKET</a>
+      </article>
+
+      <div class="tt">
+        <div>
+          <h4>TIME TABLE</h4>
+          <ol>
+            <li><span class="tm">17:30–18:00</span><span class="nm">Rowdy Rats</span></li>
+            <li><span class="tm">18:10–18:40</span><span class="nm">下村尚由</span></li>
+            <li><span class="tm">18:50–19:20</span><span class="nm">おとぎ</span></li>
+            <li><span class="tm">19:30–20:00</span><span class="nm">CATSBIRD</span></li>
+            <li><span class="tm">20:10–20:40</span><span class="nm">GRINNEE</span></li>
+            <li class="us"><span class="tm">20:50–21:20</span><span class="nm">出張バンド塾</span></li>
+          </ol>
+        </div>
+        <div>
+          <h4>PRICE</h4>
+          <div class="price">
+            <div><span class="k">ADV / 前売</span><span class="v">¥1,500</span></div>
+            <div><span class="k">DOOR / 当日</span><span class="v">¥2,000</span></div>
+            <div class="full">＋1ドリンク ¥600 ／ 取り置きの方は前売料金</div>
+          </div>
+          <p class="small" style="margin-top:16px">全6組・各30分。出張バンド塾はトリを務めます。</p>
+        </div>
+      </div>
+
+      <article class="show past">
+        <div class="d"><span class="md">10.17</span><span class="wy">2026 / SAT</span></div>
+        <div>
+          <h3>芸術の秋 2026<span class="tag" style="color:var(--gray)">主催 / 第0回</span></h3>
+          <div class="meta"><span>池袋blackhole</span><span>Dreams &amp; Future</span><span>バンド・ダンス・作品展示</span></div>
+        </div>
+        <a class="btn ghost" href="#history">MORE</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="ticket">
+  <div class="wrap">
+    <div>
+      <h2>Get on<br>the list.<span>チケット取り置き</span></h2>
+      <p>11/8のチケットはすべて取り置き制です。当日リハーサル前に、会場へ「取り置きリスト」を提出します。</p>
+      <ol class="steps">
+        <li>右のフォームに名前と枚数を入れる</li>
+        <li>できたメッセージをコピーして、メンバーにLINEかDMで送る</li>
+        <li>当日、受付で名前を伝えて前売料金で入場</li>
+      </ol>
+      <p style="margin-top:20px;font-size:14px">リストの締め切りは当日13:30です。お早めにどうぞ。</p>
+    </div>
+    <form id="f" novalidate>
+      <label for="nm">NAME ／ 受付で名乗る名前<input id="nm" name="nm" placeholder="例：山田 花子" autocomplete="name"></label>
+      <label for="qty">TICKETS ／ 枚数
+        <select id="qty" name="qty"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select>
+      </label>
+      <label for="msg">MESSAGE ／ ひとこと（任意）<textarea id="msg" name="msg">楽しみにしています！</textarea></label>
+      <div class="out" id="out" aria-live="polite"></div>
+      <div><button class="btn" type="submit">COPY MESSAGE</button><span class="copied" id="copied"></span></div>
+    </form>
+  </div>
+</section>
+
+<section class="sec" id="about">
+  <div class="wrap">
+    <div class="head"><h2><span class="jp">出張バンド塾とは</span>About</h2></div>
+    <div class="bio">
+      <blockquote>音を合わせる楽しさは、<em>ステージの上</em>だけのものじゃない。</blockquote>
+      <div class="pillars">
+        <div><span class="en">Play</span><div><h3>演奏する</h3><p>ライブハウスのブッキングライブから自主企画まで、バンドとしてステージに立ち続けています。</p></div></div>
+        <div><span class="en">Gather</span><div><h3>集める</h3><p>バンド、ダンス、イラスト、映像、アプリ。ジャンルの違う表現をひとつの場に集めて、イベントをつくります。</p></div></div>
+        <div><span class="en">Go</span><div><h3>出張する</h3><p>呼ばれた場所へ出向いて、音楽の場をひらきます。出演やイベントのご相談もお気軽に。</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="history" style="padding-top:20px">
+  <div class="wrap">
+    <div class="head"><h2><span class="jp">これまでの活動</span>History</h2><p>出張バンド塾が始動させた芸術祭。</p></div>
+    <article class="event">
+      <div class="art">
+        <span class="y">第0回 ／ 2026.10.17 SAT ／ 池袋blackhole</span>
+        <div>
+          <h3>芸術の秋</h3>
+          <span class="ff">Dreams &amp; Future</span>
+        </div>
+      </div>
+      <div class="txt">
+        <p class="copy">音を鳴らす。身体で表す。<br>未来をつくる。</p>
+        <p>2026年10月17日、池袋blackholeで「第0回」として始動した芸術祭です。ステージではバンド演奏とダンス。会場ではイラストや映像、アプリの作品展示。音楽やダンスだけでなく、いろんな「好き」を持ち寄る一日をつくりました。</p>
+        <p>テーマは「将来の夢・やりたいこと・想像する未来」。</p>
+        <ul class="chips"><li>バンド演奏</li><li>ダンス</li><li>イラスト</li><li>写真・映像</li><li>小説</li><li>アプリ</li></ul>
+      </div>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="big">出張<span>バンド塾</span></p>
+    <div class="bar"><span>© 2026 出張バンド塾</span><span>BAND JUKU — ON THE ROAD</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* nav */
+  var nav=document.getElementById("nav");
+  function onScroll(){nav.classList.toggle("solid",scrollY>40)}
+  addEventListener("scroll",onScroll,{passive:true});onScroll();
+
+  /* countdown */
+  var d=Math.ceil((new Date("2026-11-08T17:30:00+09:00")-new Date())/86400000);
+  var cl=document.getElementById("countline");
+  if(d>1)cl.textContent="次のステージまで、あと"+d+"日。";
+  else if(d===1)cl.textContent="次のステージは明日。";
+  else if(d===0)cl.textContent="今日はライブ当日。";
+  else cl.textContent="Koedo FUN Live、ありがとうございました。";
+
+  /* stage lights */
+  var cv=document.getElementById("stage"),cx=cv.getContext("2d"),W,H,dpr;
+  var still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var beams=[{x:.18,a:.35,s:.00045,p:0,w:.16},{x:.5,a:.22,s:.0006,p:2,w:.2},{x:.82,a:.32,s:.0005,p:4,w:.16},{x:.34,a:.28,s:.0004,p:1.3,w:.12},{x:.68,a:.26,s:.00055,p:3.1,w:.12}];
+  var dust=[];for(var i=0;i<70;i++)dust.push({x:Math.random(),y:Math.random(),r:Math.random()*1.6+.3,v:Math.random()*.00008+.00002});
+  function size(){dpr=Math.min(devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
+  function draw(t){
+    cx.globalCompositeOperation="source-over";
+    cx.fillStyle="#0D0909";cx.fillRect(0,0,W,H);
+    cx.globalCompositeOperation="lighter";
+    beams.forEach(function(b){
+      var ang=Math.sin(t*b.s+b.p)*b.a, ox=b.x*W, len=H*1.25, half=b.w*W;
+      var ex=ox+Math.sin(ang)*len, ey=Math.cos(ang)*len;
+      var g=cx.createLinearGradient(ox,0,ex,ey);
+      g.addColorStop(0,"rgba(255,40,40,.55)");g.addColorStop(.5,"rgba(225,20,29,.18)");g.addColorStop(1,"rgba(225,20,29,0)");
+      cx.fillStyle=g;cx.beginPath();cx.moveTo(ox-6,-10);cx.lineTo(ox+6,-10);
+      cx.lineTo(ex+half*Math.cos(ang),ey-half*Math.sin(ang));cx.lineTo(ex-half*Math.cos(ang),ey+half*Math.sin(ang));cx.closePath();cx.fill();
+      var hg=cx.createRadialGradient(ox,0,0,ox,0,60);hg.addColorStop(0,"rgba(255,220,210,.9)");hg.addColorStop(1,"rgba(255,30,30,0)");
+      cx.fillStyle=hg;cx.beginPath();cx.arc(ox,0,60,0,7);cx.fill();
+    });
+    var fl=cx.createRadialGradient(W*.5,H*1.05,0,W*.5,H*1.05,W*.7);
+    fl.addColorStop(0,"rgba(225,20,29,.35)");fl.addColorStop(1,"rgba(225,20,29,0)");
+    cx.fillStyle=fl;cx.fillRect(0,0,W,H);
+    cx.fillStyle="rgba(255,200,190,.5)";
+    dust.forEach(function(p){var y=(p.y-t*p.v)%1;if(y<0)y+=1;cx.beginPath();cx.arc(p.x*W,y*H,p.r,0,7);cx.fill();});
+  }
+  size();draw(0);
+  addEventListener("resize",function(){size();draw(performance.now())});
+  if(!still){(function loop(t){draw(t);requestAnimationFrame(loop)})(0);}
+
+  /* ticket form */
+  var f=document.getElementById("f"),out=document.getElementById("out"),cp=document.getElementById("copied");
+  function build(){
+    var n=f.nm.value.trim()||"（お名前）",q=f.qty.value,m=f.msg.value.trim();
+    out.textContent="【取り置きお願いします】\n11/8(日) Koedo FUN Live\n名前："+n+"\n枚数："+q+"枚"+(m?"\n"+m:"");
+  }
+  f.addEventListener("input",build);build();
+  f.addEventListener("submit",function(e){
+    e.preventDefault();
+    function sel(){var r=document.createRange();r.selectNodeContents(out);var s=getSelection();s.removeAllRanges();s.addRange(r);cp.textContent="選択しました。長押しでコピー";}
+    try{navigator.clipboard.writeText(out.textContent).then(function(){cp.textContent="COPIED ✓";},sel);}catch(err){sel();}
+  });
+})();
+</script>
+</body>
+</html>
